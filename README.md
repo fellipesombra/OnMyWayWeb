@@ -1,1 +1,15 @@
 # OnMyWayWeb
+
+### TODO:
+
+- Criar banco de dados
+  - 2 Tabelas:
+    - contact (id [PK], cellphone_number, email)
+    - user (id, contact_id [FK]) [PK = combinação de id e contact_id]
+- Configurar hibernate no projeto
+  - Fazer um fluxo de teste simples de inserir/excluir para verificar que está funcionando.
+    (um botão em uma pagina que chame uma função que insira algo no banco e outro pra deletar é o suficiente)
+- Implementar API do google maps no projeto
+  - Fazer aparecer o mapa em uma pagina
+  - Fazer aparecer um caminho no mapa (lista de pontos no mapa que ele conecta)
+  
