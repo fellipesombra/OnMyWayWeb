@@ -11,7 +11,7 @@
 - Configurar hibernate no projeto
   - Fazer um fluxo de teste simples de inserir/excluir para verificar que está funcionando.
     (um botão em uma pagina que chame uma função que insira algo no banco e outro pra deletar é o suficiente)
-- Implementar API do google maps no projeto
-  - Fazer aparecer o mapa em uma pagina
-  - Fazer aparecer um caminho no mapa (lista de pontos no mapa que ele conecta)
+- Implementar API do google maps no projeto (FEITO)
+  - Fazer aparecer o mapa em uma pagina (FEITO)
+  - Fazer aparecer um caminho no mapa (lista de pontos no mapa que ele conecta) (FEITO)
   
