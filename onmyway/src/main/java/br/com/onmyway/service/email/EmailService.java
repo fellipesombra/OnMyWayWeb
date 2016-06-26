@@ -1,6 +1,6 @@
 package br.com.onmyway.service.email;
 
-import br.com.onmyway.model.Email;
+import br.com.onmyway.valueobject.Email;
 
 /**
  * Classe responsável pelos serviços de envio de email

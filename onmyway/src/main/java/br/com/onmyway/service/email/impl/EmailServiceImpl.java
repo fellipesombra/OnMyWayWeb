@@ -6,9 +6,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import br.com.onmyway.model.Email;
 import br.com.onmyway.service.email.EmailBaseConfig;
 import br.com.onmyway.service.email.EmailService;
+import br.com.onmyway.valueobject.Email;
 
 
 /**

@@ -5,9 +5,11 @@
 	<artifactId>onmyway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>On My Way</name>
+	<name>On My Way Services</name>
+	<description>Aplicação de serviços do On My Way</description>
 
 	<build>
+		<finalName>onmyway-service</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -19,18 +21,7 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<!-- javax -->
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>javax.servlet-api</artifactId>
-		    <version>3.1.0</version>
-		</dependency>
-		<dependency>
-		    <groupId>javax.inject</groupId>
-		    <artifactId>javax.inject</artifactId>
-		    <version>1</version>
-		</dependency>
-		<!-- Dependencias para email -->
+		<!-- Javax mail -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -41,26 +32,22 @@
 			<artifactId>javax.mail-api</artifactId>
 			<version>1.5.2</version>
 		</dependency>
-		<!-- Dependencias para REST -->
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>3.3.1</version>
-		</dependency>
+		<!-- Jersey -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-bundle</artifactId>
+			<artifactId>jersey-servlet</artifactId>
 			<version>1.19</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
+			<artifactId>jersey-json</artifactId>
 			<version>1.19</version>
 		</dependency>
+		<!-- Deus Google -->
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-core</artifactId>
-			<version>1.19</version>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
 		</dependency>
 	</dependencies>
 </project>

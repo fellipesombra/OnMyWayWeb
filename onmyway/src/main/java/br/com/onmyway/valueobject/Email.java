@@ -1,4 +1,4 @@
-package br.com.onmyway.model;
+package br.com.onmyway.valueobject;
 
 import java.util.List;
 
