@@ -27,6 +27,7 @@
 </head>
 
 <body>
+    
     <!-- Header
 	============================================= -->
     <section class="main-header">
@@ -44,9 +45,9 @@
                 <div class="collapse navbar-collapse text-center" id="bs-example-navbar-collapse-1">
                     <div class="col-md-8 col-xs-12 nav-wrap">
                         <ul class="nav navbar-nav">
-                            <li><a href="#owl-hero" class="page-scroll">Home</a></li>
-                            <li><a href="#services" class="page-scroll">Services</a></li>
-                            <li><a href="#contact" class="page-scroll">Contact</a></li>
+                            <li><a href="/onmyway/index.html#owl-hero" class="page-scroll">Home</a></li>
+                            <li><a href="/onmyway/index.html#services" class="page-scroll">Services</a></li>
+                            <li><a href="/onmyway/index.html#contact" class="page-scroll">Contact</a></li>
                         </ul>
                     </div>
                     <div class="social-media hidden-sm hidden-xs">
@@ -60,14 +61,9 @@
             </div>
         </nav>
         <div id="owl-hero" class="owl-theme">
-            <div class="item" style="background-image: url(resources/img/looking-for-job2.jpg)">
-                <div class="caption">
-                    <h6>Safety / Personal Care / Real Time</h6>
-                    <h1>Looking for <span>Someone?</span></h1>
-                    <form action="map.html" method="GET">
-						<input type="text" class="input-trip" name="trip" id="trip" placeholder="Tracking Number"><input type="submit" class="btn btn-light" id="searchButton" value="Search !"/>
-					</form>
-                </div>
+            <div class="item">
+             	 <!-- MAP -->
+				<div id="map" class=""></div>  
             </div>
         </div>
        
@@ -77,56 +73,17 @@
 	============================================= -->
     <section id="welcome">
         <div class="container">
-            <h2>Welcome To <span>TrackME</span></h2>
+            <h2>Botar infos extras do mapa <span>AQUI</span></h2>
             <hr class="sep">
-            <p>We are pleased to help you find your friends!</p>
-            <img class="img-responsive center-block wow fadeInUp" data-wow-delay=".3s" src="resources/img/welcome/logo.png" alt="logo">
+            <p>infos aqui bla bla bla!</p>
         </div>
     </section>
 
-    <!-- Services
-	============================================= -->
-    <section id="services">
-        <div class="container">
-            <h2>What We Do</h2>
-            <hr class="light-sep">
-            <p>We Can Do Crazy Things</p>
-            <div class="services-box">
-                <div class="row wow fadeInUp" data-wow-delay=".3s">
-                   <p>Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui 
-				   - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui - Descrição do app aqui </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Contact Us
-	============================================= -->
-    <section id="contact">
-        <div class="container">
-            <h2>Contact Us</h2>
-            <hr class="sep">
-            <p>Get In Touch</p>
-            <div class="col-md-6 col-md-offset-3 wow fadeInUp" data-wow-delay=".3s">
-                <form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="Name" placeholder="Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="Email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" rows="3" placeholder="Message"></textarea>
-                    </div>
-                    <a href="#" class="btn-block">Send</a>
-                </form>
-            </div>
-        </div>
-    </section>
     <!-- Footer
 	============================================= -->
     <footer>
         <div class="container">
-            <h1>TrackME</h1>
+            <h1>OMW</h1>
             <div class="social">
                 <a href="#"><i class="fa fa-facebook fa-2x"></i></a>
                 <a href="#"><i class="fa fa-twitter fa-2x"></i></a>
@@ -143,6 +100,11 @@
 
     <!-- JS PLUGINS -->
     <script src="resources/plugins/WOW/dist/wow.min.js"></script>
+	<script type="text/javascript" src="resources/js/urlHelper.js"></script>
+	<script type="text/javascript" src="resources/js/map.js"></script>
+    <!-- GOOGLE MAP -->
+	<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2mNNIHDcNha-eh1DhGgPxlLKOdwQ68es&signed_in=true&callback=getMapInfo"></script>
 </body>
 
 </html>

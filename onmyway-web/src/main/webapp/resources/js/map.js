@@ -39,11 +39,11 @@ function getMapInfo () {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data, status, jqXHR) {
-        	initMap(data);
+        		initMap(data);
         },
 
         error: function (jqXHR, status) {
-            // error handler
+        	//
         }
 });
 }
