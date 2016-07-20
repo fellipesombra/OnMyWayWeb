@@ -22,7 +22,8 @@ public class ContactDao {
 		Session session = HibernateUtil.getSession();
 		session.beginTransaction();
 		session.save(contact);
-		session.getTransaction().commit();
+		HibernateUtil.commitTransaction();
+		HibernateUtil.closeSession();
 	}
  
 	@SuppressWarnings({ "deprecation", "unchecked" })
@@ -31,7 +32,8 @@ public class ContactDao {
 		session.beginTransaction();
 		Criteria criteria = session.createCriteria(Contact.class);
 		List<Contact> contacts = (List<Contact>)criteria.list();
-		session.getTransaction().commit();
+		HibernateUtil.commitTransaction();
+		HibernateUtil.closeSession();
 		return contacts;
 	}
 	 

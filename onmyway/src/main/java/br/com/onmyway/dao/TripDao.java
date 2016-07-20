@@ -22,7 +22,8 @@ public class TripDao {
 		Session session = HibernateUtil.getSession();
 		session.beginTransaction();
 		session.save(trip);
-		session.getTransaction().commit();
+		HibernateUtil.commitTransaction();
+		HibernateUtil.closeSession();
 	}
  
 	@SuppressWarnings({ "deprecation", "unchecked" })
@@ -31,7 +32,8 @@ public class TripDao {
 		session.beginTransaction();
 		Criteria criteria = session.createCriteria(Trip.class);
 		List<Trip> trips = (List<Trip>)criteria.list();
-		session.getTransaction().commit();
+		HibernateUtil.commitTransaction();
+		HibernateUtil.closeSession();
 		return trips;
 	}
 	 

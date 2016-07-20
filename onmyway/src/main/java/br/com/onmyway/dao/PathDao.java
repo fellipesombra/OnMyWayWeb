@@ -22,7 +22,8 @@ public class PathDao {
 		Session session = HibernateUtil.getSession();
 		session.beginTransaction();
 		session.save(path);
-		session.getTransaction().commit();
+		HibernateUtil.commitTransaction();
+		HibernateUtil.closeSession();
 	}
  
 	@SuppressWarnings({ "deprecation", "unchecked" })
@@ -31,7 +32,8 @@ public class PathDao {
 		session.beginTransaction();
 		Criteria criteria = session.createCriteria(Path.class);
 		List<Path> paths = (List<Path>)criteria.list();
-		session.getTransaction().commit();
+		HibernateUtil.commitTransaction();
+		HibernateUtil.closeSession();
 		return paths;
 	}
 	 

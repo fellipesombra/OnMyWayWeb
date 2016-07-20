@@ -22,7 +22,8 @@ public class UserDao {
 		Session session = HibernateUtil.getSession();
 		session.beginTransaction();
 		session.save(user);
-		session.getTransaction().commit();
+		HibernateUtil.commitTransaction();
+		HibernateUtil.closeSession();
 	}
  
 	@SuppressWarnings({ "deprecation", "unchecked" })
@@ -31,7 +32,8 @@ public class UserDao {
 		session.beginTransaction();
 		Criteria criteria = session.createCriteria(User.class);
 		List<User> users = (List<User>)criteria.list();
-		session.getTransaction().commit();
+		HibernateUtil.commitTransaction();
+		HibernateUtil.closeSession();
 		return users;
 	}
 	 

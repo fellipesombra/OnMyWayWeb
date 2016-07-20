@@ -11,8 +11,9 @@ public class testeBanco {
 	public static void main(String[] args){
 		//insertContact();
 		//selectContact();
-		insertUser();
+		//insertUser();
 		selectUser();
+		System.out.println("Hello World!");
 	}
 
 	private static void insertContact() {
@@ -43,6 +44,5 @@ public class testeBanco {
 		for (User user : users) {
 			System.out.println(user.getId());
 		}
-
 	}
 }
