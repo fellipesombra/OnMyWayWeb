@@ -2,15 +2,15 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping>
-   <class name="br.com.onmyway.entity.Path" table="PATH">
+   <class name="br.com.onmyway.dom.entity.Position" table="POSITION">
       <id name="id" type="int" column="ID">
          <generator class="native"/>
       </id>
-      <property name="latitude" column="LATITUDE" type="int"/>
-      <property name="longitude" column="LONGITUDE" type="int"/>
+      <property name="latitude" column="LATITUDE" type="double"/>
+      <property name="longitude" column="LONGITUDE" type="double"/>
       <property name="dateTime" column="DATE_TIME" type="timestamp"/>
 
-		<many-to-one name="trip" class="br.com.onmyway.entity.Trip">
+		<many-to-one name="trip" class="br.com.onmyway.dom.entity.Trip">
 			<column name="TRIP_ID" not-null="true"></column>
 		</many-to-one>
    </class>

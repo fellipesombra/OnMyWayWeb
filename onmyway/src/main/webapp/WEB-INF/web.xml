@@ -17,4 +17,8 @@
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
+
+	<listener>
+		<listener-class>br.com.onmyway.quartz.QuartzListener</listener-class>
+	</listener>
 </web-app>

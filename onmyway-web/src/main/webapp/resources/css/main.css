@@ -69,6 +69,29 @@ CUSTOM
    color:    #fff;
 }
 
+#owl-hero .item .captionError {
+  position: absolute;
+  top: 50%;
+  margin-top: -104px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 15;
+}
+#owl-hero .item .captionError h1 {
+  margin-top: 40px;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+}
+#owl-hero .item .captionError h1 span {
+  font-weight: 700;
+  color: #c70000;
+}
+#owl-hero .item .captionError h6 {
+  color: #fff;
+  margin: 0;
+}
+
 /* ==========================================================================
 Typography
 ========================================================================== */

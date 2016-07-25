@@ -61,16 +61,23 @@
             </div>
         </nav>
         <div id="owl-hero" class="owl-theme">
-            <div class="item">
+            <div class="item" id="itemMap">
              	 <!-- MAP -->
-				<div id="map" class=""></div>  
+				<div id="map" class=""></div>
+				<div class="captionError" id="mapNotFound">
+                    <h6>Perhaps you typed something wrong?</h6>
+                    <h1><span>Ops!</span> We couldn't find your search :(</h1>
+                    <form action="map.html" method="GET">
+						<input type="text" class="input-trip" name="trip" id="trip" placeholder="Tracking Number"><input type="submit" class="btn btn-light" id="searchButton" value="Search !"/>
+					</form>
+                </div>
             </div>
         </div>
        
     </section>
 
     <!-- Welcome
-	============================================= -->
+	=============================================
     <section id="welcome">
         <div class="container">
             <h2>Botar infos extras do mapa <span>AQUI</span></h2>
@@ -78,12 +85,14 @@
             <p>infos aqui bla bla bla!</p>
         </div>
     </section>
+    
+     -->
 
     <!-- Footer
 	============================================= -->
     <footer>
         <div class="container">
-            <h1>OMW</h1>
+            <h1>TrackME</h1>
             <div class="social">
                 <a href="#"><i class="fa fa-facebook fa-2x"></i></a>
                 <a href="#"><i class="fa fa-twitter fa-2x"></i></a>
