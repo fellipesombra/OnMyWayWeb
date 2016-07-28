@@ -91,5 +91,16 @@ public class TripDao extends GenericDAOImpl<Trip, Integer> implements
 	return savedObject;
     }
 
+    @Override
+    public Trip findActiveTripByUserId(Integer userId) {
+	Trip savedObject = null;
+	String sql = "SELECT t FROM Trip t WHERE t.user.id=:id and t.finished=0";
+	HibernateUtil.beginTransaction();
+	Query query = HibernateUtil.getSession().createQuery(sql).setParameter("id", userId);
+	savedObject = (Trip) findOne(query);
+	HibernateUtil.commitTransaction();
+	return savedObject;
+    }
+
 
 }

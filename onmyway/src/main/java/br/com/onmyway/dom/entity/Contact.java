@@ -2,6 +2,9 @@ package br.com.onmyway.dom.entity;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Contact implements Serializable{
     private static final long serialVersionUID = 1L;
     

@@ -117,6 +117,22 @@ public class MapServiceREST {
 	return response;
     }
     
+    @GET
+    @Path("/trip/user/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTrip(@PathParam("id") String userId){
+	Response response = null;
+	try {
+	    Trip trip = tripRepository.findActiveTripByUserId(Integer.valueOf(userId));
+	    response = Response.status(Status.OK).entity(trip).build();
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
+		    .entity("Erro ao recuperar viagem").build();
+	    e.printStackTrace();
+	}
+	return response;
+    }
+    
     @POST
     @Path("/position")
     @Produces(MediaType.APPLICATION_JSON)

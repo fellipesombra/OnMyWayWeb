@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -76,7 +78,26 @@ public class ContactServiceREST {
 	    contact.setUser(user);
 	    contactDao.saveContact(contact);
 	    response = Response.status(Status.OK)
-		    .entity("Contatos salvos com sucesso").build();
+		    .entity(contact).build();
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
+		    .entity("Erro ao inserir contatos: " + e.getMessage())
+		    .build();
+	    e.printStackTrace();
+	}
+	return response;
+    }
+    
+    @GET
+    @Path("/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUserContacts(@PathParam ("userId") String userId){
+	Response response = null;
+	try {
+	    User user = userDao.findById(Integer.valueOf(userId));
+	    List<Contact> contacts = contactDao.findAllByUser(user);
+	    response = Response.status(Status.OK)
+		    .entity(contacts).build();
 	} catch (Exception e) {
 	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
 		    .entity("Erro ao inserir contatos: " + e.getMessage())

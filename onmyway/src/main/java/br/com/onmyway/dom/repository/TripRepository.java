@@ -19,4 +19,6 @@ public interface TripRepository extends GenericDAO<Trip, Integer>{
 
     Trip endTrip(Trip trip);
 
+    Trip findActiveTripByUserId(Integer integer);
+
 }
