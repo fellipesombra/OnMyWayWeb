@@ -50,7 +50,7 @@ public class UserServiceREST {
 	    if(user == null){
 		response = Response.status(Status.OK).entity(EMPTY_STR).build();
 	    }else{
-		response = Response.status(Status.OK).entity(String.valueOf(user.getId())).build();
+		response = Response.status(Status.OK).entity(user).build();
 	    }
 	} catch (Exception e) {
 	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(EMPTY_STR).build();
