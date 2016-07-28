@@ -18,6 +18,7 @@ import br.com.onmyway.dom.repository.UserRepository;
 @Path("/user")
 public class UserServiceREST {
     
+    private static final Object EMPTY_STR = "";
     private UserRepository userDao = new UserDao();
     
     @POST
@@ -47,12 +48,12 @@ public class UserServiceREST {
 	try {
 	    User user = userDao.findUserByEmailAndPassword(email, password);
 	    if(user == null){
-		response = Response.status(Status.OK).entity(null).build();
+		response = Response.status(Status.OK).entity(EMPTY_STR).build();
 	    }else{
-		response = Response.status(Status.OK).entity(user.getId()).build();
+		response = Response.status(Status.OK).entity(String.valueOf(user.getId())).build();
 	    }
 	} catch (Exception e) {
-	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(EMPTY_STR).build();
 	    e.printStackTrace();
 	}
 	return response;
