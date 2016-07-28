@@ -97,7 +97,7 @@ public class MapServiceREST {
 	return response;
     }
     
-    @POST
+    @GET
     @Path("/trip/end/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response startTrip(@PathParam("id") String tripId){
