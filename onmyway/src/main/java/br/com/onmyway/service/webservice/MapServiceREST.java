@@ -128,7 +128,7 @@ public class MapServiceREST {
 	    Trip trip = tripRepository.findById(Integer.valueOf(tripId));
 
 	    Position position = new Position();
-	    position.setDateTime(new Date());
+	    position.setDateTime(Calendar.getInstance().getTime());
 	    position.setLatitude(Double.valueOf(lat));
 	    position.setLongitude(Double.valueOf(lng));
 	    position.setTrip(trip);
