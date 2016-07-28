@@ -98,6 +98,26 @@ public class MapServiceREST {
     }
     
     @POST
+    @Path("/trip/end/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response startTrip(@PathParam("id") String tripId){
+	Response response = null;
+	try {
+	    
+	    Trip trip = tripRepository.findById(Integer.valueOf(tripId));
+	    trip.setFinished(1);
+	    Trip tripSaved = tripRepository.endTrip(trip);
+
+	    response = Response.status(Status.OK).entity(tripSaved).build();
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
+		    .entity("Erro ao recuperar viagem").build();
+	    e.printStackTrace();
+	}
+	return response;
+    }
+    
+    @POST
     @Path("/position")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

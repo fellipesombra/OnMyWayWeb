@@ -78,4 +78,18 @@ public class TripDao extends GenericDAOImpl<Trip, Integer> implements
 	return savedObject;
     }
 
+    @Override
+    public Trip endTrip(Trip trip) {
+	Trip savedObject = null;
+	try {
+	    HibernateUtil.beginTransaction();
+	    savedObject = merge(trip);
+	    HibernateUtil.commitTransaction();
+	} catch (HibernateException ex) {
+	    ex.printStackTrace();
+	}
+	return savedObject;
+    }
+
+
 }
