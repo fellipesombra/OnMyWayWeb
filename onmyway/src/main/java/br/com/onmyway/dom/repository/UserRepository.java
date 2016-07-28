@@ -11,4 +11,6 @@ public interface UserRepository extends GenericDAO<User, Integer>{
 
     User findById(Integer id) throws HibernateException;
 
+    User findUserByEmailAndPassword(String email, String password);
+    
 }

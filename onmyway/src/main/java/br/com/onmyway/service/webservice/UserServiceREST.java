@@ -2,9 +2,11 @@ package br.com.onmyway.service.webservice;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -32,6 +34,25 @@ public class UserServiceREST {
 	    response = Response.status(Status.OK).entity("Usuário Salvo com sucesso").build();
 	} catch (Exception e) {
 	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o usuário: "+ e.getMessage()).build();
+	    e.printStackTrace();
+	}
+	return response;
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(@QueryParam("email") String email, @QueryParam("password") String password){
+        
+	Response response = null;
+	try {
+	    User user = userDao.findUserByEmailAndPassword(email, password);
+	    if(user == null){
+		response = Response.status(Status.OK).entity(null).build();
+	    }else{
+		response = Response.status(Status.OK).entity(user.getId()).build();
+	    }
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
 	    e.printStackTrace();
 	}
 	return response;
