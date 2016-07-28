@@ -44,4 +44,18 @@ public class ContactDao extends GenericDAOImpl<Contact, Integer> implements
 	return contacts;
     }
 
+    @Override
+    public Contact saveContact(Contact contact) {
+	Contact savedObject = null;
+	try {
+	    HibernateUtil.beginTransaction();
+	    savedObject = save(contact);
+	    HibernateUtil.commitTransaction();
+	} catch (HibernateException ex) {
+	    ex.printStackTrace();
+	    HibernateUtil.rollbackTransaction();
+	}
+	return savedObject;
+    }
+
 }

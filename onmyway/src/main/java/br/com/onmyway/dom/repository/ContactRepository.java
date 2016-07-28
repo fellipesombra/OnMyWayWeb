@@ -12,4 +12,6 @@ public interface ContactRepository extends GenericDAO<Contact, Integer>{
 
     List<Contact> findAllByUser(User user);
 
+    Contact saveContact(Contact contact);
+
 }

@@ -3,6 +3,7 @@ package br.com.onmyway.service.webservice;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -28,9 +29,10 @@ public class ContactServiceREST {
     private UserRepository userDao = new UserDao();
 
     @POST
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response register(	List<ContatoDTO> contatosDTO) {
+    public Response registerList(List<ContatoDTO> contatosDTO) {
 
 	Response response = null;
 	try {
@@ -52,6 +54,29 @@ public class ContactServiceREST {
 		response = Response.status(Status.OK)
 			.entity("Contatos salvos com sucesso").build();
 	    }
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
+		    .entity("Erro ao inserir contatos: " + e.getMessage())
+		    .build();
+	    e.printStackTrace();
+	}
+	return response;
+    }
+    
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response register(@FormParam("id") String userId, @FormParam("email") String email, @FormParam("phone") String phone){
+	Response response = null;
+	try {
+	    User user = userDao.findById(Integer.valueOf(userId));
+	    Contact contact = new Contact();
+	    contact.setCellphoneNumber(phone);
+	    contact.setEmail(email);
+	    contact.setUser(user);
+	    contactDao.saveContact(contact);
+	    response = Response.status(Status.OK)
+		    .entity("Contatos salvos com sucesso").build();
 	} catch (Exception e) {
 	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
 		    .entity("Erro ao inserir contatos: " + e.getMessage())
