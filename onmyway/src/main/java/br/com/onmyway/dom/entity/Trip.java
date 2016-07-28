@@ -1,8 +1,11 @@
 package br.com.onmyway.dom.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Trip {
+public class Trip implements Serializable{
+    private static final long serialVersionUID = 1L;
+    
     private int id;
     private Date endTime;
     private User user;
