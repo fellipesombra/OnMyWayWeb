@@ -38,17 +38,44 @@ public class TripDao extends GenericDAOImpl<Trip, Integer> implements
 	HibernateUtil.commitTransaction();
 	return person;
     }
-    
+
     @Override
     public List<Trip> findAllTripsNotFinishedsoOnTime() {
 	List<Trip> person = null;
 	Date date = new Date();
 	String sql = "SELECT t FROM Trip t WHERE t.finished=0 AND t.endTime < :date";
 	HibernateUtil.beginTransaction();
-	Query query = HibernateUtil.getSession().createQuery(sql).setParameter("date", date);
+	Query query = HibernateUtil.getSession().createQuery(sql)
+		.setParameter("date", date);
 	person = (List<Trip>) findMany(query);
 	HibernateUtil.commitTransaction();
 	return person;
+    }
+
+    @Override
+    public Trip saveTrip(Trip trip) {
+	Trip savedObject = null;
+	try {
+	    HibernateUtil.beginTransaction();
+	    savedObject = save(trip);
+	    HibernateUtil.commitTransaction();
+	} catch (HibernateException ex) {
+	    ex.printStackTrace();
+	}
+	return savedObject;
+    }
+
+    @Override
+    public Trip findById(Integer id) {
+	Trip savedObject = null;
+	try {
+	    HibernateUtil.beginTransaction();
+	    savedObject = findByID(Trip.class, id);
+	    HibernateUtil.commitTransaction();
+	} catch (HibernateException ex) {
+	    ex.printStackTrace();
+	}
+	return savedObject;
     }
 
 }

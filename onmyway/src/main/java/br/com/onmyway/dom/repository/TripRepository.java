@@ -13,4 +13,8 @@ public interface TripRepository extends GenericDAO<Trip, Integer>{
 
     List<Trip> findAllTripsNotFinishedsoOnTime();
 
+    Trip saveTrip(Trip trip);
+
+    Trip findById(Integer id);
+
 }

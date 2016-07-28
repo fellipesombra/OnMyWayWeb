@@ -31,10 +31,10 @@ public class UserServiceREST {
 	    User user = new User();
 	    user.setEmail(email);
 	    user.setPassword(password);
-	    userDao.saveUser(user);
-	    response = Response.status(Status.OK).entity("Usuário Salvo com sucesso").build();
+	    User saveUser = userDao.saveUser(user);
+	    response = Response.status(Status.OK).entity(saveUser).build();
 	} catch (Exception e) {
-	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o usuário: "+ e.getMessage()).build();
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(EMPTY_STR).build();
 	    e.printStackTrace();
 	}
 	return response;

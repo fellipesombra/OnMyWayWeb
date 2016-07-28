@@ -1,8 +1,13 @@
 package br.com.onmyway.service.webservice;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -11,8 +16,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.com.onmyway.dom.dao.PositionDao;
+import br.com.onmyway.dom.dao.TripDao;
+import br.com.onmyway.dom.dao.UserDao;
 import br.com.onmyway.dom.entity.Position;
+import br.com.onmyway.dom.entity.Trip;
+import br.com.onmyway.dom.entity.User;
 import br.com.onmyway.dom.repository.PositionRepository;
+import br.com.onmyway.dom.repository.TripRepository;
+import br.com.onmyway.dom.repository.UserRepository;
 import br.com.onmyway.valueobject.LatLng;
 import br.com.onmyway.valueobject.MapInfo;
 
@@ -22,6 +33,10 @@ import com.google.common.collect.Lists;
 public class MapServiceREST {
 
     private PositionRepository positionRepository = new PositionDao();
+    
+    private TripRepository tripRepository = new TripDao();
+    
+    private UserRepository userDao = new UserDao();
 
     @GET
     @Path("/trip/{id}")
@@ -50,6 +65,62 @@ public class MapServiceREST {
 	    e.printStackTrace();
 	}
 	
+	return response;
+    }
+    
+    @POST
+    @Path("/trip")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response startTrip(@FormParam("id") String userId, @FormParam("time") String time){
+	Response response = null;
+	try {
+
+	    User user = userDao.findById(Integer.valueOf(userId));
+
+	    Calendar cal = Calendar.getInstance();
+	    cal.add(Calendar.MINUTE, Integer.valueOf(time));
+
+	    Trip trip = new Trip();
+	    trip.setEndTime(cal.getTime());
+	    trip.setFinished(0);
+	    trip.setUser(user);
+
+	    Trip saveTrip = tripRepository.saveTrip(trip);
+
+	    response = Response.status(Status.OK).entity(saveTrip).build();
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
+		    .entity("Erro ao recuperar viagem").build();
+	    e.printStackTrace();
+	}
+	return response;
+    }
+    
+    @POST
+    @Path("/position")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response savePosition(@FormParam("id") String tripId, @FormParam("lat") String lat, @FormParam("lng") String lng){
+	Response response = null;
+	try {
+
+	    Trip trip = tripRepository.findById(Integer.valueOf(tripId));
+
+	    Position position = new Position();
+	    position.setDateTime(new Date());
+	    position.setLatitude(Double.valueOf(lat));
+	    position.setLongitude(Double.valueOf(lng));
+	    position.setTrip(trip);
+
+	    Position savePosition = positionRepository.savePosition(position);
+
+	    response = Response.status(Status.OK).entity(savePosition).build();
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity("")
+		    .build();
+	    e.printStackTrace();
+	}
 	return response;
     }
     
