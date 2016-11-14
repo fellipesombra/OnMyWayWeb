@@ -14,6 +14,7 @@ import br.com.onmyway.dom.entity.Contact;
 import br.com.onmyway.dom.entity.Trip;
 import br.com.onmyway.dom.repository.ContactRepository;
 import br.com.onmyway.dom.repository.TripRepository;
+import br.com.onmyway.enums.TripStatus;
 import br.com.onmyway.service.email.EmailService;
 import br.com.onmyway.service.email.impl.EmailServiceImpl;
 import br.com.onmyway.valueobject.Email;
@@ -40,6 +41,12 @@ public class TripVerifierJob implements Job {
 	List<Trip> allTrips = tripDao.findAllTripsNotFinishedsoOnTime();
 	alertContacts(allTrips);
 	
+	for (Trip trip : allTrips) {
+	    trip.setFinished(TripStatus.FINISHED.getStatusCode());
+	}
+	tripDao.updateTrips(allTrips);
+	
+	
 	System.out.println("tripVerifier executado");
     }
 
@@ -54,7 +61,7 @@ public class TripVerifierJob implements Job {
 	   for (Contact contact : contacts) {
 	       receivers.add(contact.getEmail());
 	   }
-	   Email emailInfo = new Email(receivers, String.format(SUBJECT, trip.getUser().getEmail()), String.format(MESSAGE, trip.getUser().getEmail(), trip.getId()));
+	   Email emailInfo = new Email(receivers, String.format(SUBJECT, trip.getUser().getName()), String.format(MESSAGE, trip.getUser().getName(), trip.getId()));
 	   emailService.sendEmail(emailInfo);
 	}
     }

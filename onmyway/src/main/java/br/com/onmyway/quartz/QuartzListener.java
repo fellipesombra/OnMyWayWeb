@@ -24,16 +24,26 @@ public class QuartzListener implements ServletContextListener {
 	    // Setup the Job class and the Job group
 	    JobDetail job = newJob(TripVerifierJob.class).withIdentity(
 		    "TripJob", "Group").build();
-	    // Create a Trigger that fires every 5 minutes.
+	    
+	    JobDetail jobCleaner = newJob(TripDBCleanerJob.class).withIdentity(
+		    "TripJobCleaner", "Group").build();
+	    // Create a Trigger that fires every 2 minutes. 
 	    Trigger trigger = newTrigger()
 		    .withIdentity("TriggerTrip", "Group")
 		    .withSchedule(
 			    CronScheduleBuilder
 				    .cronSchedule("0 0/2 * 1/1 * ? *")).build();
-	    // Setup the Job and Trigger with Scheduler & schedule jobs
+	 // Create a Trigger that fires every 6 hours. 
+	    Trigger triggerCleaner = newTrigger()
+		    .withIdentity("TriggerTripCleaner", "Group")
+		    .withSchedule(
+			    CronScheduleBuilder
+				    .cronSchedule("0 0 0/6 1/1 * ? *")).build();
+	    // Setup the Job and Trigger with Scheduler & schedule jobs. 
 	    scheduler = new StdSchedulerFactory().getScheduler();
 	    scheduler.start();
 	    scheduler.scheduleJob(job, trigger);
+	    scheduler.scheduleJob(jobCleaner, triggerCleaner);
 	} catch (SchedulerException e) {
 	    e.printStackTrace();
 	}

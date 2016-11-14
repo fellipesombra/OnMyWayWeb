@@ -30,26 +30,26 @@ public class TripDao extends GenericDAOImpl<Trip, Integer> implements
 
     @Override
     public List<Trip> findAllActiveTrips() {
-	List<Trip> person = null;
+	List<Trip> trips = null;
 	String sql = "SELECT t FROM Trip t WHERE t.finished=0";
 	HibernateUtil.beginTransaction();
 	Query query = HibernateUtil.getSession().createQuery(sql);
-	person = (List<Trip>) findMany(query);
+	trips = (List<Trip>) findMany(query);
 	HibernateUtil.commitTransaction();
-	return person;
+	return trips;
     }
 
     @Override
     public List<Trip> findAllTripsNotFinishedsoOnTime() {
-	List<Trip> person = null;
+	List<Trip> trips = null;
 	Date date = new Date();
 	String sql = "SELECT t FROM Trip t WHERE t.finished=0 AND t.endTime < :date";
 	HibernateUtil.beginTransaction();
 	Query query = HibernateUtil.getSession().createQuery(sql)
 		.setParameter("date", date);
-	person = (List<Trip>) findMany(query);
+	trips = (List<Trip>) findMany(query);
 	HibernateUtil.commitTransaction();
-	return person;
+	return trips;
     }
 
     @Override
@@ -79,11 +79,26 @@ public class TripDao extends GenericDAOImpl<Trip, Integer> implements
     }
 
     @Override
-    public Trip endTrip(Trip trip) {
+    public Trip updateTrip(Trip trip) {
 	Trip savedObject = null;
 	try {
 	    HibernateUtil.beginTransaction();
 	    savedObject = merge(trip);
+	    HibernateUtil.commitTransaction();
+	} catch (HibernateException ex) {
+	    ex.printStackTrace();
+	}
+	return savedObject;
+    }
+    
+    @Override
+    public List<Trip> updateTrips(List<Trip> trips) {
+	List<Trip> savedObject = new ArrayList<Trip>();
+	try {
+	    HibernateUtil.beginTransaction();
+	    for (Trip trip : trips) {
+		savedObject.add(merge(trip));
+	    }
 	    HibernateUtil.commitTransaction();
 	} catch (HibernateException ex) {
 	    ex.printStackTrace();
@@ -102,5 +117,28 @@ public class TripDao extends GenericDAOImpl<Trip, Integer> implements
 	return savedObject;
     }
 
-
+    @Override
+    public List<Trip> findTwoDaysOldTrips() {
+	List<Trip> trips = null;
+	String sql = "SELECT t FROM Trip t WHERE DATEDIFF(NOW(),t.endTime) > 3 ";
+	HibernateUtil.beginTransaction();
+	Query query = HibernateUtil.getSession().createQuery(sql);
+	trips = (List<Trip>) findMany(query);
+	HibernateUtil.commitTransaction();
+	return trips;
+	
+    }
+    
+    @Override
+    public void deleteTrips(List<Trip> trips) {
+	try {
+	    HibernateUtil.beginTransaction();
+	    for (Trip trip : trips) {
+		delete(trip);
+	    }
+	    HibernateUtil.commitTransaction();
+	} catch (HibernateException ex) {
+	    ex.printStackTrace();
+	}
+    }
 }

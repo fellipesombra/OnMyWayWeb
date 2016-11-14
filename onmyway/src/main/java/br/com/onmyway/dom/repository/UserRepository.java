@@ -13,4 +13,6 @@ public interface UserRepository extends GenericDAO<User, Integer>{
 
     User findUserByEmailAndPassword(String email, String password);
     
+    User findUserByEmail(String email);
+    
 }

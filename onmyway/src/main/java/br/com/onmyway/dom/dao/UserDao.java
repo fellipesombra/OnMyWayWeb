@@ -1,11 +1,8 @@
 package br.com.onmyway.dom.dao;
 
-import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
-import br.com.onmyway.dom.entity.Position;
 import br.com.onmyway.dom.entity.User;
 import br.com.onmyway.dom.repository.UserRepository;
 import br.com.onmyway.util.HibernateUtil;
@@ -50,6 +47,23 @@ public class UserDao extends GenericDAOImpl<User, Integer> implements
 	    Query query = HibernateUtil.getSession().createQuery(sql)
 		    .setParameter("email", email)
 		    .setParameter("password", password);
+	    user = (User) findOne(query);
+	    HibernateUtil.commitTransaction();
+	} catch (HibernateException ex) {
+	    ex.printStackTrace();
+	    throw ex;
+	}
+	return user;
+    }
+    
+    @Override
+    public User findUserByEmail(String email) {
+	User user = null;
+	try {
+	    String sql = "SELECT u FROM User u WHERE u.email = :email";
+	    HibernateUtil.beginTransaction();
+	    Query query = HibernateUtil.getSession().createQuery(sql)
+		    .setParameter("email", email);
 	    user = (User) findOne(query);
 	    HibernateUtil.commitTransaction();
 	} catch (HibernateException ex) {

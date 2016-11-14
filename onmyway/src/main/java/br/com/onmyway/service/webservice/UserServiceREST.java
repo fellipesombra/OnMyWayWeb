@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response.Status;
 import br.com.onmyway.dom.dao.UserDao;
 import br.com.onmyway.dom.entity.User;
 import br.com.onmyway.dom.repository.UserRepository;
+import br.com.onmyway.util.CryptoUtil;
 
 @Path("/user")
 public class UserServiceREST {
@@ -24,15 +25,25 @@ public class UserServiceREST {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response register(@FormParam("email") String email, @FormParam("password") String password){
+    public Response register(@FormParam("email") String email, @FormParam("password") String password,  @FormParam("name") String name){
         
 	Response response = null;
 	try {
-	    User user = new User();
-	    user.setEmail(email);
-	    user.setPassword(password);
-	    User saveUser = userDao.saveUser(user);
-	    response = Response.status(Status.OK).entity(saveUser).build();
+	    //checa se email já está em uso
+	    User userBD = userDao.findUserByEmail(email);
+	    if(userBD == null){
+		User user = new User();
+        	user.setEmail(email);
+        	user.setSalt(CryptoUtil.generateSalt());
+        	user.setPassword(CryptoUtil.getSecurePassword(password, user.getSaltBytes()));
+        	user.setName(name);
+        	User saveUser = userDao.saveUser(user);
+        	response = Response.status(Status.OK).entity(saveUser).build();
+	    }else{
+		//user id=0 representa email email já existente
+		userBD.setId(0);
+		response = Response.status(Status.OK).entity(userBD).build();
+	    }
 	} catch (Exception e) {
 	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(EMPTY_STR).build();
 	    e.printStackTrace();
@@ -46,11 +57,19 @@ public class UserServiceREST {
         
 	Response response = null;
 	try {
-	    User user = userDao.findUserByEmailAndPassword(email, password);
+	    User user = userDao.findUserByEmail(email);
 	    if(user == null){
-		response = Response.status(Status.OK).entity(EMPTY_STR).build();
-	    }else{
+		user = new User();
+		user.setId(-1);
 		response = Response.status(Status.OK).entity(user).build();
+	    }else{
+		String encryptedPassword = CryptoUtil.getSecurePassword(password, user.getSaltBytes());
+		if(user.getPassword().equals(encryptedPassword)){
+		    response = Response.status(Status.OK).entity(user).build();
+		}else{
+		    user.setId(0);
+		    response = Response.status(Status.OK).entity(user).build();
+		}
 	    }
 	} catch (Exception e) {
 	    response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(EMPTY_STR).build();

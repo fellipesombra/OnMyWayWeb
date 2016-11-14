@@ -24,8 +24,11 @@ import br.com.onmyway.dom.entity.User;
 import br.com.onmyway.dom.repository.PositionRepository;
 import br.com.onmyway.dom.repository.TripRepository;
 import br.com.onmyway.dom.repository.UserRepository;
+import br.com.onmyway.enums.RestResponseStatus;
+import br.com.onmyway.enums.TripStatus;
 import br.com.onmyway.valueobject.LatLng;
 import br.com.onmyway.valueobject.MapInfo;
+import br.com.onmyway.valueobject.TripResponse;
 
 import com.google.common.collect.Lists;
 
@@ -72,18 +75,20 @@ public class MapServiceREST {
     @Path("/trip")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response startTrip(@FormParam("id") String userId, @FormParam("time") String time){
+    public Response startTrip(@FormParam("id") String userId, @FormParam("time") String time, @FormParam("lat") String lat, @FormParam("lng") String lng){
 	Response response = null;
 	try {
 
 	    User user = userDao.findById(Integer.valueOf(userId));
 
 	    Calendar cal = Calendar.getInstance();
-	    cal.add(Calendar.MINUTE, Integer.valueOf(time));
+	    cal.add(Calendar.SECOND, Integer.valueOf(time));
 
 	    Trip trip = new Trip();
 	    trip.setEndTime(cal.getTime());
-	    trip.setFinished(0);
+	    trip.setFinished(TripStatus.ACTIVE.getStatusCode());
+	    trip.setLatitude(Double.valueOf(lat));
+	    trip.setLongitude(Double.valueOf(lng));
 	    trip.setUser(user);
 
 	    Trip saveTrip = tripRepository.saveTrip(trip);
@@ -100,13 +105,36 @@ public class MapServiceREST {
     @GET
     @Path("/trip/end/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response startTrip(@PathParam("id") String tripId){
+    public Response endTrip(@PathParam("id") String tripId){
 	Response response = null;
 	try {
 	    
 	    Trip trip = tripRepository.findById(Integer.valueOf(tripId));
-	    trip.setFinished(1);
-	    Trip tripSaved = tripRepository.endTrip(trip);
+	    trip.setFinished(TripStatus.FINISHED.getStatusCode());
+	    Trip tripSaved = tripRepository.updateTrip(trip);
+
+	    response = Response.status(Status.OK).entity(tripSaved).build();
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
+		    .entity("Erro ao recuperar viagem").build();
+	    e.printStackTrace();
+	}
+	return response;
+    }
+    
+    @GET
+    @Path("/trip/delay/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response delayTrip(@PathParam("id") String tripId){
+	Response response = null;
+	try {
+	    
+	    Trip trip = tripRepository.findById(Integer.valueOf(tripId));
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(trip.getEndTime());
+	    cal.add(Calendar.MINUTE, 30);
+	    trip.setEndTime(cal.getTime());
+	    Trip tripSaved = tripRepository.updateTrip(trip);
 
 	    response = Response.status(Status.OK).entity(tripSaved).build();
 	} catch (Exception e) {
@@ -124,7 +152,8 @@ public class MapServiceREST {
 	Response response = null;
 	try {
 	    Trip trip = tripRepository.findActiveTripByUserId(Integer.valueOf(userId));
-	    response = Response.status(Status.OK).entity(trip).build();
+	    TripResponse tripResponse = new TripResponse(RestResponseStatus.TRIP_FOUND, trip);
+	    response = Response.status(Status.OK).entity(tripResponse).build();
 	} catch (Exception e) {
 	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
 		    .entity("Erro ao recuperar viagem").build();

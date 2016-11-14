@@ -1,6 +1,7 @@
 package br.com.onmyway.dom.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;

@@ -11,6 +11,9 @@
       <property name="endTime" column="END_TIME" type="timestamp"/>
       <property name="finished" column="FINISHED" type="int"/>
       
+      <property name="latitude" column="LATITUDE" type="double"/>
+      <property name="longitude" column="LONGITUDE" type="double"/>
+      
       <many-to-one name="user" class="br.com.onmyway.dom.entity.User">
 			<column name="USER_ID" not-null="true"></column>
 	  </many-to-one>

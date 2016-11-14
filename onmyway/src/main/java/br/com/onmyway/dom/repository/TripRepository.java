@@ -17,8 +17,14 @@ public interface TripRepository extends GenericDAO<Trip, Integer>{
 
     Trip findById(Integer id);
 
-    Trip endTrip(Trip trip);
+    Trip updateTrip(Trip trip);
+    
+    List<Trip> updateTrips(List<Trip> trips);
 
     Trip findActiveTripByUserId(Integer integer);
+
+    List<Trip> findTwoDaysOldTrips();
+
+    void deleteTrips(List<Trip> trips);
 
 }
