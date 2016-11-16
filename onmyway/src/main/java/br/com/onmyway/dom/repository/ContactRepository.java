@@ -14,4 +14,7 @@ public interface ContactRepository extends GenericDAO<Contact, Integer>{
 
     Contact saveContact(Contact contact);
 
+    Contact findById(Integer id);
+
+    void deleteContact(Contact contact);
 }

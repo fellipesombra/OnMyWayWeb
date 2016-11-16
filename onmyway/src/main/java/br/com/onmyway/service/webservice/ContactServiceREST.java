@@ -13,12 +13,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.hibernate.exception.ConstraintViolationException;
+
 import br.com.onmyway.dom.dao.ContactDao;
 import br.com.onmyway.dom.dao.UserDao;
 import br.com.onmyway.dom.entity.Contact;
+import br.com.onmyway.dom.entity.Trip;
 import br.com.onmyway.dom.entity.User;
 import br.com.onmyway.dom.repository.ContactRepository;
 import br.com.onmyway.dom.repository.UserRepository;
+import br.com.onmyway.enums.RestResponseStatus;
+import br.com.onmyway.enums.TripStatus;
+import br.com.onmyway.valueobject.ContactResponse;
 import br.com.onmyway.valueobject.ContatoDTO;
 
 import com.google.common.collect.Lists;
@@ -68,23 +74,27 @@ public class ContactServiceREST {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response register(@FormParam("id") String userId, @FormParam("email") String email, @FormParam("phone") String phone){
+    public Response register(@FormParam("id") String userId, @FormParam("email") String email){
 	Response response = null;
 	try {
 	    User user = userDao.findById(Integer.valueOf(userId));
 	    Contact contact = new Contact();
-	    contact.setCellphoneNumber(phone);
 	    contact.setEmail(email);
 	    contact.setUser(user);
 	    contactDao.saveContact(contact);
 	    response = Response.status(Status.OK)
-		    .entity(contact).build();
+		    .entity(new ContactResponse(RestResponseStatus.CONTACT_ADD.getStatusCode(),contact)).build();
 	} catch (Exception e) {
-	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
-		    .entity("Erro ao inserir contatos: " + e.getMessage())
-		    .build();
-	    e.printStackTrace();
-	}
+	    if(e instanceof ConstraintViolationException){
+		response = Response.status(Status.OK)
+			    .entity(new ContactResponse(RestResponseStatus.CONTACT_ALREADY_EXISTS.getStatusCode()))
+			    .build();
+	    }else{
+		response = Response.status(Status.INTERNAL_SERVER_ERROR)
+			    .entity("Erro ao inserir contatos: " + e.getMessage())
+			    .build();
+	    }
+	} 
 	return response;
     }
     
@@ -102,6 +112,23 @@ public class ContactServiceREST {
 	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
 		    .entity("Erro ao inserir contatos: " + e.getMessage())
 		    .build();
+	    e.printStackTrace();
+	}
+	return response;
+    }
+    
+    @GET
+    @Path("/delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response delete(@PathParam("id") String contactId){
+	Response response = null;
+	try {
+	    Contact contact = contactDao.findById(Integer.valueOf(contactId));
+	    contactDao.deleteContact(contact);
+	    response = Response.status(Status.OK).entity(new ContactResponse(RestResponseStatus.CONTACT_DELETED.getStatusCode())).build();
+	} catch (Exception e) {
+	    response = Response.status(Status.INTERNAL_SERVER_ERROR)
+		    .entity("Erro ao recuperar viagem").build();
 	    e.printStackTrace();
 	}
 	return response;

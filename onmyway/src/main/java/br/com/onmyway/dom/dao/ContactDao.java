@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import br.com.onmyway.dom.entity.Contact;
+import br.com.onmyway.dom.entity.Trip;
 import br.com.onmyway.dom.entity.User;
 import br.com.onmyway.dom.repository.ContactRepository;
 import br.com.onmyway.util.HibernateUtil;
@@ -56,6 +57,26 @@ public class ContactDao extends GenericDAOImpl<Contact, Integer> implements
 	    HibernateUtil.rollbackTransaction();
 	}
 	return savedObject;
+    }
+
+    @Override
+    public Contact findById(Integer id) {
+	Contact savedObject = null;
+	try {
+	    HibernateUtil.beginTransaction();
+	    savedObject = findByID(Contact.class, id);
+	    HibernateUtil.commitTransaction();
+	} catch (HibernateException ex) {
+	    ex.printStackTrace();
+	}
+	return savedObject;
+    }
+
+    @Override
+    public void deleteContact(Contact contact) {
+	HibernateUtil.beginTransaction();
+	delete(contact);
+	HibernateUtil.commitTransaction();
     }
 
 }
